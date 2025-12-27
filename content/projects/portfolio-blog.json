@@ -1,8 +1,8 @@
 {
-  "id": "portfolio-blog",
+  "id": "blog",
   "title": "Personal Portfolio & Blog",
-  "description": "A modern portfolio website with integrated blog functionality built with Flask and Tailwind CSS. Features markdown blog posts, fuzzy search, and responsive design.",
-  "cover_image": "/static/images/projects/portfolio.jpg",
-  "github_url": "https://github.com/yourusername/portfolio-blog",
-  "technologies": ["Python", "Flask", "Tailwind CSS", "JavaScript", "Markdown"]
+  "description": "This blog.",
+  "cover_image": "/static/images/projects/blog.png",
+  "github_url": "https://github.com/PedroNunesPagnussat/blog",
+  "technologies": ["Python", "Tailwind CSS", "HTML"]
 }
