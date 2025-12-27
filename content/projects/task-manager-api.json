@@ -1,0 +1,8 @@
+{
+  "id": "task-manager-api",
+  "title": "Task Manager REST API",
+  "description": "A RESTful API for task management built with FastAPI and PostgreSQL. Includes user authentication, CRUD operations, and comprehensive API documentation with Swagger.",
+  "cover_image": "/static/images/projects/task-api.jpg",
+  "github_url": "https://github.com/yourusername/task-manager-api",
+  "technologies": ["Python", "FastAPI", "PostgreSQL", "Docker", "JWT"]
+}

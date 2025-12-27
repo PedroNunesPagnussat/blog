@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}Blog - Personal Portfolio{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<section class="py-16 border-b border-ctpl-surface0 dark:border-ctp-surface0">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold text-ctpl-text dark:text-ctp-text mb-2">Blog</h1>
+        <p class="text-ctpl-overlay1 dark:text-ctp-overlay1">Thoughts on software development and technology</p>
+    </div>
+</section>
+
+<!-- Search Bar -->
+<section class="bg-ctpl-mantle/50 dark:bg-ctp-mantle/50 py-6 sticky top-16 z-40 border-b border-ctpl-surface0 dark:border-ctp-surface0">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative">
+            <input type="text"
+                   id="search-input"
+                   placeholder="Search posts..."
+                   class="w-full px-4 py-3 bg-ctpl-base dark:bg-ctp-base border border-ctpl-surface1 dark:border-ctp-surface1 rounded text-ctpl-text dark:text-ctp-text placeholder-ctpl-overlay0 dark:placeholder-ctp-overlay0 focus:border-ctpl-mauve dark:focus:border-ctp-mauve focus:outline-none text-sm">
+            <i class="fas fa-search absolute right-4 top-1/2 transform -translate-y-1/2 text-ctpl-overlay0 dark:text-ctp-overlay0"></i>
+        </div>
+        <div id="search-results" class="mt-2 hidden">
+            <!-- Search results will be inserted here -->
+        </div>
+    </div>
+</section>
+
+<!-- Blog Posts -->
+<section class="py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div id="posts-container" class="space-y-4">
+            {% for post in posts %}
+            <article class="bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg hover:border-ctpl-surface1 dark:hover:border-ctp-surface1 transition">
+                <a href="/blog/{{ post.slug }}" class="block p-5">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-2">
+                        <h2 class="text-base font-semibold text-ctpl-text dark:text-ctp-text hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition">
+                            {{ post.title }}
+                        </h2>
+                        <span class="text-xs text-ctpl-overlay0 dark:text-ctp-overlay0 shrink-0">{{ post.date }}</span>
+                    </div>
+                    <p class="text-ctpl-overlay1 dark:text-ctp-overlay1 text-sm mb-3">{{ post.description }}</p>
+                    <div class="flex flex-wrap gap-2">
+                        {% for keyword in post.keywords %}
+                        <span class="px-2 py-0.5 bg-ctpl-surface0 dark:bg-ctp-surface0 text-ctpl-mauve dark:text-ctp-mauve text-xs rounded">
+                            {{ keyword }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                </a>
+            </article>
+            {% endfor %}
+        </div>
+
+        {% if not posts %}
+        <div class="text-center py-16">
+            <i class="fas fa-inbox text-4xl text-ctpl-surface2 dark:text-ctp-surface2 mb-4"></i>
+            <p class="text-ctpl-overlay1 dark:text-ctp-overlay1">No blog posts yet</p>
+        </div>
+        {% endif %}
+
+        <!-- Pagination -->
+        {% if total_pages > 1 %}
+        <nav class="mt-12 flex items-center justify-center gap-2">
+            {% if page > 1 %}
+            <a href="/blog?page={{ page - 1 }}"
+               class="px-4 py-2 border border-ctpl-surface1 dark:border-ctp-surface1 text-ctpl-subtext1 dark:text-ctp-subtext1 rounded hover:border-ctpl-mauve dark:hover:border-ctp-mauve hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition text-sm">
+                <i class="fas fa-chevron-left mr-1"></i> Previous
+            </a>
+            {% endif %}
+
+            <div class="flex items-center gap-1">
+                {% for p in range(1, total_pages + 1) %}
+                    {% if p == page %}
+                    <span class="px-3 py-2 bg-ctpl-mauve dark:bg-ctp-mauve text-ctpl-base dark:text-ctp-base rounded text-sm font-medium">
+                        {{ p }}
+                    </span>
+                    {% elif p == 1 or p == total_pages or (p >= page - 1 and p <= page + 1) %}
+                    <a href="/blog?page={{ p }}"
+                       class="px-3 py-2 border border-ctpl-surface1 dark:border-ctp-surface1 text-ctpl-subtext1 dark:text-ctp-subtext1 rounded hover:border-ctpl-mauve dark:hover:border-ctp-mauve hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition text-sm">
+                        {{ p }}
+                    </a>
+                    {% elif p == 2 and page > 3 %}
+                    <span class="px-2 text-ctpl-overlay0 dark:text-ctp-overlay0">...</span>
+                    {% elif p == total_pages - 1 and page < total_pages - 2 %}
+                    <span class="px-2 text-ctpl-overlay0 dark:text-ctp-overlay0">...</span>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            {% if page < total_pages %}
+            <a href="/blog?page={{ page + 1 }}"
+               class="px-4 py-2 border border-ctpl-surface1 dark:border-ctp-surface1 text-ctpl-subtext1 dark:text-ctp-subtext1 rounded hover:border-ctpl-mauve dark:hover:border-ctp-mauve hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition text-sm">
+                Next <i class="fas fa-chevron-right ml-1"></i>
+            </a>
+            {% endif %}
+        </nav>
+        <p class="text-center text-xs text-ctpl-overlay0 dark:text-ctp-overlay0 mt-4">
+            Page {{ page }} of {{ total_pages }} ({{ total_posts }} posts)
+        </p>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const searchInput = document.getElementById('search-input');
+    const searchResults = document.getElementById('search-results');
+    let debounceTimer;
+
+    searchInput.addEventListener('input', (e) => {
+        clearTimeout(debounceTimer);
+        const query = e.target.value.trim();
+
+        if (query.length < 2) {
+            searchResults.classList.add('hidden');
+            return;
+        }
+
+        debounceTimer = setTimeout(async () => {
+            try {
+                const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+                const results = await response.json();
+
+                if (results.length > 0) {
+                    displaySearchResults(results);
+                } else {
+                    displayNoResults();
+                }
+            } catch (error) {
+                console.error('Search error:', error);
+            }
+        }, 300);
+    });
+
+    function displaySearchResults(results) {
+        searchResults.classList.remove('hidden');
+        const isDark = document.documentElement.classList.contains('dark');
+        const html = results.map(post => `
+            <a href="/blog/${post.slug}" class="block p-3 hover:bg-ctpl-surface0 dark:hover:bg-ctp-surface0 border-b border-ctpl-surface0 dark:border-ctp-surface0 last:border-b-0">
+                <h3 class="font-medium text-ctpl-text dark:text-ctp-text text-sm mb-1">${post.title}</h3>
+                <p class="text-xs text-ctpl-overlay1 dark:text-ctp-overlay1 mb-2">${post.description}</p>
+                <div class="flex flex-wrap gap-1">
+                    ${post.keywords.map(k => `
+                        <span class="px-2 py-0.5 bg-ctpl-surface0 dark:bg-ctp-surface0 text-ctpl-mauve dark:text-ctp-mauve text-xs rounded">${k}</span>
+                    `).join('')}
+                </div>
+            </a>
+        `).join('');
+
+        searchResults.innerHTML = `<div class="bg-ctpl-mantle dark:bg-ctp-mantle rounded border border-ctpl-surface1 dark:border-ctp-surface1 max-h-80 overflow-y-auto">${html}</div>`;
+    }
+
+    function displayNoResults() {
+        searchResults.classList.remove('hidden');
+        searchResults.innerHTML = `
+            <div class="bg-ctpl-mantle dark:bg-ctp-mantle rounded border border-ctpl-surface1 dark:border-ctp-surface1 p-4">
+                <p class="text-ctpl-overlay1 dark:text-ctp-overlay1 text-center text-sm">No results found</p>
+            </div>
+        `;
+    }
+
+    document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+            searchResults.classList.add('hidden');
+        }
+    });
+</script>
+{% endblock %}

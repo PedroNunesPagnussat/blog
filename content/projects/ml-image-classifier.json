@@ -1,0 +1,8 @@
+{
+  "id": "ml-image-classifier",
+  "title": "Image Classification Web App",
+  "description": "A machine learning powered image classification application using TensorFlow and Flask. Upload images and get real-time predictions with confidence scores.",
+  "cover_image": "/static/images/projects/ml-classifier.jpg",
+  "github_url": "https://github.com/yourusername/ml-image-classifier",
+  "technologies": ["Python", "TensorFlow", "Flask", "OpenCV", "NumPy"]
+}

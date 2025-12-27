@@ -1,0 +1,343 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} - Blog{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<section class="py-16 border-b border-ctpl-surface0 dark:border-ctp-surface0">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-6">
+            <a href="/blog" class="text-ctpl-overlay1 dark:text-ctp-overlay1 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition inline-flex items-center text-sm">
+                <i class="fas fa-arrow-left mr-2"></i> Back
+            </a>
+        </div>
+        <h1 class="text-3xl md:text-4xl font-bold text-ctpl-text dark:text-ctp-text mb-4">{{ post.title }}</h1>
+        <div class="flex items-center text-ctpl-overlay1 dark:text-ctp-overlay1 text-sm">
+            <span>{{ post.date }}</span>
+        </div>
+    </div>
+</section>
+
+<!-- Content -->
+<article class="py-12">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-8 pb-8 border-b border-ctpl-surface0 dark:border-ctp-surface0">
+            <p class="text-ctpl-subtext0 dark:text-ctp-subtext0 text-lg leading-relaxed mb-4">
+                {{ post.description }}
+            </p>
+            <div class="flex flex-wrap gap-2">
+                {% for keyword in post.keywords %}
+                <span class="px-2 py-1 bg-ctpl-surface0 dark:bg-ctp-surface0 border border-ctpl-surface1 dark:border-ctp-surface1 text-ctpl-mauve dark:text-ctp-mauve text-xs rounded">
+                    {{ keyword }}
+                </span>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="blog-content">
+            {{ post.html_content | safe }}
+        </div>
+
+        <!-- Navigation -->
+        <div class="mt-12 pt-8 border-t border-ctpl-surface0 dark:border-ctp-surface0">
+            <a href="/blog"
+               class="text-ctpl-mauve dark:text-ctp-mauve hover:text-ctpl-pink dark:hover:text-ctp-pink transition inline-flex items-center text-sm">
+                <i class="fas fa-arrow-left mr-2"></i> All posts
+            </a>
+        </div>
+    </div>
+</article>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Dark theme styles (Catppuccin Mocha) */
+    .dark .blog-content h1,
+    .dark .blog-content h2,
+    .dark .blog-content h3 {
+        color: #cdd6f4;
+    }
+
+    .dark .blog-content p,
+    .dark .blog-content li {
+        color: #a6adc8;
+    }
+
+    .dark .blog-content a {
+        color: #cba6f7;
+    }
+
+    .dark .blog-content a:hover {
+        color: #f5c2e7;
+    }
+
+    .dark .blog-content code {
+        background-color: #313244;
+        color: #cba6f7;
+    }
+
+    .dark .blog-content pre {
+        background-color: #1e1e2e;
+        border-color: #313244;
+    }
+
+    .dark .blog-content pre code {
+        background-color: transparent;
+        color: #cdd6f4;
+    }
+
+    .dark .blog-content blockquote {
+        border-color: #cba6f7;
+        color: #7f849c;
+    }
+
+    .dark .blog-content th {
+        background-color: #313244;
+        color: #cdd6f4;
+        border-color: #45475a;
+    }
+
+    .dark .blog-content td {
+        border-color: #45475a;
+        color: #a6adc8;
+    }
+
+    .dark .blog-content strong {
+        color: #cdd6f4;
+    }
+
+    .dark .blog-content hr {
+        border-color: #313244;
+    }
+
+    .dark .code-block-wrapper .copy-btn {
+        background: #45475a;
+        color: #a6adc8;
+    }
+
+    .dark .code-block-wrapper .copy-btn:hover {
+        background: #585b70;
+        color: #cdd6f4;
+    }
+
+    .dark .code-block-wrapper .copy-btn.copied {
+        background: #a6e3a1;
+        color: #1e1e2e;
+    }
+
+    /* Light theme styles (Catppuccin Latte) */
+    .blog-content h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #4c4f69;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .blog-content h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #4c4f69;
+        margin-top: 2rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .blog-content h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #4c4f69;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .blog-content p {
+        color: #6c6f85;
+        line-height: 1.75;
+        margin-bottom: 1rem;
+    }
+
+    .blog-content ul {
+        list-style-type: disc;
+        margin-left: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .blog-content ol {
+        list-style-type: decimal;
+        margin-left: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .blog-content li {
+        color: #6c6f85;
+        margin-bottom: 0.5rem;
+        line-height: 1.75;
+    }
+
+    .blog-content a {
+        color: #8839ef;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+    }
+
+    .blog-content a:hover {
+        color: #ea76cb;
+    }
+
+    .blog-content code {
+        background-color: #ccd0da;
+        color: #8839ef;
+        padding: 0.125rem 0.375rem;
+        border-radius: 0.25rem;
+        font-size: 0.875rem;
+        font-family: ui-monospace, monospace;
+    }
+
+    .code-block-wrapper {
+        position: relative;
+        margin: 1.5rem 0;
+    }
+
+    .code-block-wrapper .copy-btn {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        padding: 0.25rem 0.5rem;
+        background: #bcc0cc;
+        border: none;
+        border-radius: 0.25rem;
+        color: #6c6f85;
+        font-size: 0.75rem;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.2s, background 0.2s;
+    }
+
+    .code-block-wrapper:hover .copy-btn {
+        opacity: 1;
+    }
+
+    .code-block-wrapper .copy-btn:hover {
+        background: #acb0be;
+        color: #4c4f69;
+    }
+
+    .code-block-wrapper .copy-btn.copied {
+        background: #40a02b;
+        color: #fff;
+    }
+
+    .blog-content pre {
+        background-color: #e6e9ef;
+        border: 1px solid #ccd0da;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        overflow-x: auto;
+        margin: 0;
+    }
+
+    .blog-content pre code {
+        background-color: transparent;
+        color: #4c4f69;
+        padding: 0;
+        font-size: 0.875rem;
+        line-height: 1.6;
+    }
+
+    .blog-content blockquote {
+        border-left: 2px solid #8839ef;
+        padding-left: 1rem;
+        font-style: italic;
+        color: #8c8fa1;
+        margin: 1.5rem 0;
+    }
+
+    .blog-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1rem;
+    }
+
+    .blog-content th {
+        background-color: #ccd0da;
+        color: #4c4f69;
+        font-weight: 600;
+        padding: 0.75rem;
+        border: 1px solid #bcc0cc;
+        text-align: left;
+    }
+
+    .blog-content td {
+        padding: 0.75rem;
+        border: 1px solid #bcc0cc;
+        color: #6c6f85;
+    }
+
+    .blog-content img {
+        border-radius: 0.5rem;
+        margin: 1.5rem 0;
+        max-width: 100%;
+        height: auto;
+    }
+
+    .blog-content strong {
+        color: #4c4f69;
+        font-weight: 600;
+    }
+
+    .blog-content hr {
+        border-color: #ccd0da;
+        margin: 2rem 0;
+    }
+
+    /* Syntax highlighting - handled by hljs theme switching */
+    .blog-content pre code.hljs {
+        background: transparent;
+        padding: 0;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Wrap each pre element and add copy button
+        document.querySelectorAll('.blog-content pre').forEach((pre) => {
+            // Create wrapper
+            const wrapper = document.createElement('div');
+            wrapper.className = 'code-block-wrapper';
+            pre.parentNode.insertBefore(wrapper, pre);
+            wrapper.appendChild(pre);
+
+            // Create copy button
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'copy-btn';
+            copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+            wrapper.appendChild(copyBtn);
+
+            // Copy functionality
+            copyBtn.addEventListener('click', async () => {
+                const code = pre.querySelector('code');
+                const text = code ? code.textContent : pre.textContent;
+
+                try {
+                    await navigator.clipboard.writeText(text);
+                    copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied';
+                    copyBtn.classList.add('copied');
+                    setTimeout(() => {
+                        copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                        copyBtn.classList.remove('copied');
+                    }, 2000);
+                } catch (err) {
+                    console.error('Failed to copy:', err);
+                }
+            });
+
+            // Apply syntax highlighting
+            const codeBlock = pre.querySelector('code');
+            if (codeBlock) {
+                hljs.highlightElement(codeBlock);
+            }
+        });
+    });
+</script>
+{% endblock %}
