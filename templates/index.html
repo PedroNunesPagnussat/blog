@@ -5,7 +5,7 @@
 {% block content %}
 <!-- Hero Section -->
 <section class="py-24 md:py-32">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7.25xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
                 <h1 class="text-4xl md:text-5xl font-bold text-ctpl-text dark:text-ctp-text mb-4">{{ profile.name }}</h1>
@@ -51,7 +51,7 @@
 <section class="py-16 border-y border-ctpl-surface0 dark:border-ctp-surface0">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
         <h2 class="text-2xl font-semibold text-center text-ctpl-text dark:text-ctp-text mb-2">Tech Stack</h2>
-        <p class="text-ctpl-overlay1 dark:text-ctp-overlay1 text-center text-sm">Technologies I work with</p>
+        <!-- <p class="text-ctpl-overlay1 dark:text-ctp-overlay1 text-center text-sm">Technologies I work with</p> -->
     </div>
 
     <!-- Line 1: Left to Right -->
@@ -60,7 +60,11 @@
             {% for _ in range(4) %}
             {% for tech in tech_stack_line_1 %}
             <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                {% if tech.svg %}
+                <span class="w-8 h-8 bg-ctpl-mauve dark:bg-ctp-mauve" style="-webkit-mask: url('{{ tech.svg }}') center/contain no-repeat; mask: url('{{ tech.svg }}') center/contain no-repeat;"></span>
+                {% else %}
                 <i class="{{ tech.icon }} text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                {% endif %}
                 <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">{{ tech.name }}</span>
             </div>
             {% endfor %}
@@ -74,7 +78,11 @@
             {% for _ in range(4) %}
             {% for tech in tech_stack_line_2 %}
             <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                {% if tech.svg %}
+                <span class="w-8 h-8 bg-ctpl-mauve dark:bg-ctp-mauve" style="-webkit-mask: url('{{ tech.svg }}') center/contain no-repeat; mask: url('{{ tech.svg }}') center/contain no-repeat;"></span>
+                {% else %}
                 <i class="{{ tech.icon }} text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                {% endif %}
                 <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">{{ tech.name }}</span>
             </div>
             {% endfor %}
@@ -85,24 +93,26 @@
 
 <!-- Work Experience -->
 <section class="py-20">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7.25xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-2xl font-semibold text-center text-ctpl-text dark:text-ctp-text mb-12">Experience</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             {% for job in experience %}
-            <div class="bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg p-5">
-                <div class="mb-3">
+            <div class="bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg p-6">
+                <div class="mb-4">
                     <div class="flex items-center justify-between">
-                        <h3 class="text-base font-semibold text-ctpl-text dark:text-ctp-text">{{ job.company }}</h3>
-                        <span class="text-xs text-ctpl-overlay1 dark:text-ctp-overlay1">{{ job.period }}</span>
+                        <h3 class="text-lg font-semibold text-ctpl-text dark:text-ctp-text">{{ job.company }}</h3>
+                        <span class="text-sm text-ctpl-overlay1 dark:text-ctp-overlay1">{{ job.period }}</span>
                     </div>
-                    <p class="text-ctpl-mauve dark:text-ctp-mauve text-sm">{{ job.title }}</p>
-                    <p class="text-xs text-ctpl-overlay1 dark:text-ctp-overlay1">{{ job.location }}</p>
+                    <div class="flex items-center justify-between">
+                        <p class="text-ctpl-mauve dark:text-ctp-mauve text-base">{{ job.title }}</p>
+                        <span class="text-sm text-ctpl-overlay1 dark:text-ctp-overlay1">{{ job.location }}</span>
+                    </div>
                 </div>
-                <ul class="space-y-1.5">
+                <ul class="space-y-2">
                     {% for highlight in job.highlights %}
                     <li class="flex items-start">
-                        <span class="text-ctpl-mauve dark:text-ctp-mauve mr-2 mt-1 text-xs">&#9679;</span>
-                        <span class="text-ctpl-subtext0 dark:text-ctp-subtext0 text-xs leading-relaxed">{{ highlight }}</span>
+                        <span class="text-ctpl-mauve dark:text-ctp-mauve mr-2 mt-1.5 text-xs">&#9679;</span>
+                        <span class="text-ctpl-subtext0 dark:text-ctp-subtext0 text-sm leading-relaxed">{{ highlight|safe }}</span>
                     </li>
                     {% endfor %}
                 </ul>
@@ -114,14 +124,14 @@
 
 <!-- Education -->
 <section class="py-20 border-t border-ctpl-surface0 dark:border-ctp-surface0">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7.25xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-2xl font-semibold text-center text-ctpl-text dark:text-ctp-text mb-12">Education</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             {% for edu in education %}
             <div class="bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg p-6">
-                <h3 class="text-base font-semibold text-ctpl-text dark:text-ctp-text mb-2">{{ edu.degree }}</h3>
-                <p class="text-ctpl-mauve dark:text-ctp-mauve text-sm mb-3">{{ edu.institution }}</p>
-                <div class="flex items-center justify-between text-xs text-ctpl-overlay1 dark:text-ctp-overlay1">
+                <h3 class="text-lg font-semibold text-ctpl-text dark:text-ctp-text mb-2">{{ edu.degree }}</h3>
+                <p class="text-ctpl-mauve dark:text-ctp-mauve text-base mb-3">{{ edu.institution }}</p>
+                <div class="flex items-center justify-between text-sm text-ctpl-overlay1 dark:text-ctp-overlay1">
                     <span>{{ edu.location }}</span>
                     <span>{{ edu.period }}</span>
                 </div>
@@ -131,9 +141,24 @@
     </div>
 </section>
 
+<!-- Languages -->
+<section class="py-20 border-t border-ctpl-surface0 dark:border-ctp-surface0">
+    <div class="max-w-7.25xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-semibold text-center text-ctpl-text dark:text-ctp-text mb-12">Languages</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {% for lang in languages %}
+            <div class="bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg p-6 text-left">
+                <p class="text-ctpl-text dark:text-ctp-text font-semibold text-lg">{{ lang.name }}</p>
+                <p class="text-ctpl-mauve dark:text-ctp-mauve text-base">{{ lang.level }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
 <!-- Quick Links -->
 <section class="py-20 border-t border-ctpl-surface0 dark:border-ctp-surface0">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7.25xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <a href="/blog" class="group">
                 <div class="bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg p-6 hover:border-ctpl-mauve/50 dark:hover:border-ctp-mauve/50 transition card-hover">

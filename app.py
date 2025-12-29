@@ -132,6 +132,7 @@ def home():
         tech_stack_line_2=app.config['TECH_STACK_LINE_2'],
         experience=app.config['EXPERIENCE'],
         education=app.config['EDUCATION'],
+        languages=app.config['LANGUAGES'],
         resume_path=app.config['RESUME_PATH']
     )
 
