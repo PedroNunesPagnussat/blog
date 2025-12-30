@@ -3,7 +3,6 @@ import os
 import json
 import markdown
 from datetime import datetime
-from rapidfuzz import fuzz, process
 from config import Config
 
 app = Flask(__name__)
