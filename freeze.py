@@ -59,9 +59,10 @@ if __name__ == '__main__':
     nojekyll_path = os.path.join(docs_dir, '.nojekyll')
     open(nojekyll_path, 'w').close()
 
-    # Create CNAME file for custom domain
-    cname_path = os.path.join(docs_dir, 'CNAME')
-    with open(cname_path, 'w') as f:
-        f.write(Config.DOMAIN)
+    # Create CNAME file for custom domain (if configured)
+    if Config.DOMAIN:
+        cname_path = os.path.join(docs_dir, 'CNAME')
+        with open(cname_path, 'w') as f:
+            f.write(Config.DOMAIN)
 
     print("Done! Static files generated in 'docs' directory.")
