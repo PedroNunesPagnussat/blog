@@ -1,4 +1,5 @@
 Flask==3.0.0
+Frozen-Flask==1.0.2
 Markdown==3.5.1
 Pygments==2.17.2
 rapidfuzz==3.6.1

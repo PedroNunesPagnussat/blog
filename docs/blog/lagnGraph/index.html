@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I built a news intelligence agent with LangGraph. I&#39;m still not sure I needed the framework. - Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Check for saved theme preference or default to dark
+        if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.classList.remove('dark');
+        }
+
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        // Catppuccin Mocha (Dark)
+                        ctp: {
+                            base: '#1e1e2e',
+                            mantle: '#181825',
+                            crust: '#11111b',
+                            text: '#cdd6f4',
+                            subtext1: '#bac2de',
+                            subtext0: '#a6adc8',
+                            overlay2: '#9399b2',
+                            overlay1: '#7f849c',
+                            overlay0: '#6c7086',
+                            surface2: '#585b70',
+                            surface1: '#45475a',
+                            surface0: '#313244',
+                            blue: '#89b4fa',
+                            lavender: '#b4befe',
+                            sapphire: '#74c7ec',
+                            sky: '#89dceb',
+                            teal: '#94e2d5',
+                            green: '#a6e3a1',
+                            yellow: '#f9e2af',
+                            peach: '#fab387',
+                            maroon: '#eba0ac',
+                            red: '#f38ba8',
+                            mauve: '#cba6f7',
+                            pink: '#f5c2e7',
+                            flamingo: '#f2cdcd',
+                            rosewater: '#f5e0dc',
+                        },
+                        // Catppuccin Latte (Light)
+                        ctpl: {
+                            base: '#eff1f5',
+                            mantle: '#e6e9ef',
+                            crust: '#dce0e8',
+                            text: '#4c4f69',
+                            subtext1: '#5c5f77',
+                            subtext0: '#6c6f85',
+                            overlay2: '#7c7f93',
+                            overlay1: '#8c8fa1',
+                            overlay0: '#9ca0b0',
+                            surface2: '#acb0be',
+                            surface1: '#bcc0cc',
+                            surface0: '#ccd0da',
+                            blue: '#1e66f5',
+                            lavender: '#7287fd',
+                            sapphire: '#209fb5',
+                            sky: '#04a5e5',
+                            teal: '#179299',
+                            green: '#40a02b',
+                            yellow: '#df8e1d',
+                            peach: '#fe640b',
+                            maroon: '#e64553',
+                            red: '#d20f39',
+                            mauve: '#8839ef',
+                            pink: '#ea76cb',
+                            flamingo: '#dd7878',
+                            rosewater: '#dc8a78',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/catppuccin-mocha.min.css" id="hljs-theme">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        /* Carousel animations - seamless infinite loop */
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes scroll-right {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .carousel-track {
+            display: flex;
+            width: fit-content;
+        }
+
+        .carousel-track-left {
+            animation: scroll-left 60s linear infinite;
+        }
+
+        .carousel-track-right {
+            animation: scroll-right 60s linear infinite;
+        }
+
+        .carousel-track:hover {
+            animation-play-state: paused;
+        }
+
+        .carousel-item {
+            flex-shrink: 0;
+        }
+
+        .card-hover {
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Dark theme scrollbar */
+        .dark ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .dark ::-webkit-scrollbar-track {
+            background: #1e1e2e;
+        }
+
+        .dark ::-webkit-scrollbar-thumb {
+            background: #45475a;
+            border-radius: 4px;
+        }
+
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #585b70;
+        }
+
+        /* Light theme scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #eff1f5;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #bcc0cc;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #acb0be;
+        }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(15deg);
+        }
+    </style>
+    
+<style>
+    /* Dark theme styles (Catppuccin Mocha) */
+    .dark .blog-content h1,
+    .dark .blog-content h2,
+    .dark .blog-content h3 {
+        color: #cdd6f4;
+    }
+
+    .dark .blog-content p,
+    .dark .blog-content li {
+        color: #a6adc8;
+    }
+
+    .dark .blog-content a {
+        color: #cba6f7;
+    }
+
+    .dark .blog-content a:hover {
+        color: #f5c2e7;
+    }
+
+    .dark .blog-content code {
+        background-color: #313244;
+        color: #cba6f7;
+    }
+
+    .dark .blog-content pre {
+        background-color: #1e1e2e;
+        border-color: #313244;
+    }
+
+    .dark .blog-content pre code {
+        background-color: transparent;
+        color: #cdd6f4;
+    }
+
+    .dark .blog-content blockquote {
+        border-color: #cba6f7;
+        color: #7f849c;
+    }
+
+    .dark .blog-content th {
+        background-color: #313244;
+        color: #cdd6f4;
+        border-color: #45475a;
+    }
+
+    .dark .blog-content td {
+        border-color: #45475a;
+        color: #a6adc8;
+    }
+
+    .dark .blog-content strong {
+        color: #cdd6f4;
+    }
+
+    .dark .blog-content hr {
+        border-color: #313244;
+    }
+
+    .dark .code-block-wrapper .copy-btn {
+        background: #45475a;
+        color: #a6adc8;
+    }
+
+    .dark .code-block-wrapper .copy-btn:hover {
+        background: #585b70;
+        color: #cdd6f4;
+    }
+
+    .dark .code-block-wrapper .copy-btn.copied {
+        background: #a6e3a1;
+        color: #1e1e2e;
+    }
+
+    /* Light theme styles (Catppuccin Latte) */
+    .blog-content h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #4c4f69;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .blog-content h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #4c4f69;
+        margin-top: 2rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .blog-content h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #4c4f69;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .blog-content p {
+        color: #6c6f85;
+        line-height: 1.75;
+        margin-bottom: 1rem;
+    }
+
+    .blog-content ul {
+        list-style-type: disc;
+        margin-left: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .blog-content ol {
+        list-style-type: decimal;
+        margin-left: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .blog-content li {
+        color: #6c6f85;
+        margin-bottom: 0.5rem;
+        line-height: 1.75;
+    }
+
+    .blog-content a {
+        color: #8839ef;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+    }
+
+    .blog-content a:hover {
+        color: #ea76cb;
+    }
+
+    .blog-content code {
+        background-color: #ccd0da;
+        color: #8839ef;
+        padding: 0.125rem 0.375rem;
+        border-radius: 0.25rem;
+        font-size: 0.875rem;
+        font-family: ui-monospace, monospace;
+    }
+
+    .code-block-wrapper {
+        position: relative;
+        margin: 1.5rem 0;
+    }
+
+    .code-block-wrapper .copy-btn {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        padding: 0.25rem 0.5rem;
+        background: #bcc0cc;
+        border: none;
+        border-radius: 0.25rem;
+        color: #6c6f85;
+        font-size: 0.75rem;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.2s, background 0.2s;
+    }
+
+    .code-block-wrapper:hover .copy-btn {
+        opacity: 1;
+    }
+
+    .code-block-wrapper .copy-btn:hover {
+        background: #acb0be;
+        color: #4c4f69;
+    }
+
+    .code-block-wrapper .copy-btn.copied {
+        background: #40a02b;
+        color: #fff;
+    }
+
+    .blog-content pre {
+        background-color: #e6e9ef;
+        border: 1px solid #ccd0da;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        overflow-x: auto;
+        margin: 0;
+    }
+
+    .blog-content pre code {
+        background-color: transparent;
+        color: #4c4f69;
+        padding: 0;
+        font-size: 0.875rem;
+        line-height: 1.6;
+    }
+
+    .blog-content blockquote {
+        border-left: 2px solid #8839ef;
+        padding-left: 1rem;
+        font-style: italic;
+        color: #8c8fa1;
+        margin: 1.5rem 0;
+    }
+
+    .blog-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1rem;
+    }
+
+    .blog-content th {
+        background-color: #ccd0da;
+        color: #4c4f69;
+        font-weight: 600;
+        padding: 0.75rem;
+        border: 1px solid #bcc0cc;
+        text-align: left;
+    }
+
+    .blog-content td {
+        padding: 0.75rem;
+        border: 1px solid #bcc0cc;
+        color: #6c6f85;
+    }
+
+    .blog-content img {
+        border-radius: 0.5rem;
+        margin: 1.5rem 0;
+        max-width: 100%;
+        height: auto;
+    }
+
+    .blog-content strong {
+        color: #4c4f69;
+        font-weight: 600;
+    }
+
+    .blog-content hr {
+        border-color: #ccd0da;
+        margin: 2rem 0;
+    }
+
+    /* Syntax highlighting - handled by hljs theme switching */
+    .blog-content pre code.hljs {
+        background: transparent;
+        padding: 0;
+    }
+</style>
+
+</head>
+<body class="bg-ctpl-base dark:bg-ctp-base text-ctpl-text dark:text-ctp-text min-h-screen transition-colors duration-300">
+    <!-- Navigation -->
+    <nav class="bg-ctpl-mantle/80 dark:bg-ctp-mantle/80 backdrop-blur-md border-b border-ctpl-surface0 dark:border-ctp-surface0 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-xl font-semibold text-ctpl-text dark:text-ctp-text hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition">
+                        Pedro Pagnussat
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-ctpl-subtext0 dark:text-ctp-subtext0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition text-sm font-medium">Home</a>
+                    <a href="/blog" class="text-ctpl-subtext0 dark:text-ctp-subtext0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition text-sm font-medium">Blog</a>
+                    <a href="/projects" class="text-ctpl-subtext0 dark:text-ctp-subtext0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition text-sm font-medium">Projects</a>
+                    <a href="/resume" class="text-ctpl-subtext0 dark:text-ctp-subtext0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition text-sm font-medium">Resume</a>
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="theme-toggle text-ctpl-subtext0 dark:text-ctp-subtext0 hover:text-ctpl-yellow dark:hover:text-ctp-yellow p-2">
+                        <i class="fas fa-sun text-lg hidden dark:inline"></i>
+                        <i class="fas fa-moon text-lg dark:hidden"></i>
+                    </button>
+                </div>
+                <div class="md:hidden flex items-center space-x-4">
+                    <button id="theme-toggle-mobile" class="theme-toggle text-ctpl-subtext0 dark:text-ctp-subtext0 hover:text-ctpl-yellow dark:hover:text-ctp-yellow p-2">
+                        <i class="fas fa-sun text-lg hidden dark:inline"></i>
+                        <i class="fas fa-moon text-lg dark:hidden"></i>
+                    </button>
+                    <button id="mobile-menu-button" class="text-ctpl-subtext0 dark:text-ctp-subtext0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-ctpl-mantle dark:bg-ctp-mantle border-t border-ctpl-surface0 dark:border-ctp-surface0">
+            <div class="px-4 pt-2 pb-4 space-y-1">
+                <a href="/" class="block px-3 py-2 rounded text-ctpl-subtext0 dark:text-ctp-subtext0 hover:bg-ctpl-surface0 dark:hover:bg-ctp-surface0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve text-sm">Home</a>
+                <a href="/blog" class="block px-3 py-2 rounded text-ctpl-subtext0 dark:text-ctp-subtext0 hover:bg-ctpl-surface0 dark:hover:bg-ctp-surface0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve text-sm">Blog</a>
+                <a href="/projects" class="block px-3 py-2 rounded text-ctpl-subtext0 dark:text-ctp-subtext0 hover:bg-ctpl-surface0 dark:hover:bg-ctp-surface0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve text-sm">Projects</a>
+                <a href="/resume" class="block px-3 py-2 rounded text-ctpl-subtext0 dark:text-ctp-subtext0 hover:bg-ctpl-surface0 dark:hover:bg-ctp-surface0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve text-sm">Resume</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        
+<!-- Header -->
+<section class="py-10 border-b border-ctpl-surface0 dark:border-ctp-surface0">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-6">
+            <a href="/blog" class="text-ctpl-overlay1 dark:text-ctp-overlay1 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition inline-flex items-center text-sm">
+                <i class="fas fa-arrow-left mr-2"></i> Back
+            </a>
+        </div>
+        <h1 class="text-3xl md:text-4xl font-bold text-ctpl-text dark:text-ctp-text mb-4">I built a news intelligence agent with LangGraph. I&#39;m still not sure I needed the framework.</h1>
+        <div class="flex items-center text-ctpl-overlay1 dark:text-ctp-overlay1 text-sm">
+            <span>2025-12-16</span>
+        </div>
+    </div>
+</section>
+
+<!-- Content -->
+<article class="py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-6 pb-6 border-b border-ctpl-surface0 dark:border-ctp-surface0">
+            <p class="text-ctpl-subtext0 dark:text-ctp-subtext0 text-lg leading-relaxed mb-4">
+                May take on the Lang stack
+            </p>
+            <div class="flex flex-wrap gap-2">
+                
+                <span class="px-2 py-1 bg-ctpl-surface0 dark:bg-ctp-surface0 border border-ctpl-surface1 dark:border-ctp-surface1 text-ctpl-mauve dark:text-ctp-mauve text-xs rounded">
+                    LangGraph
+                </span>
+                
+                <span class="px-2 py-1 bg-ctpl-surface0 dark:bg-ctp-surface0 border border-ctpl-surface1 dark:border-ctp-surface1 text-ctpl-mauve dark:text-ctp-mauve text-xs rounded">
+                    AI Agents
+                </span>
+                
+            </div>
+        </div>
+        <div class="blog-content">
+            <h1 id="i-built-a-news-intelligence-agent-with-langgraph-im-still-not-sure-i-needed-the-framework">I built a news intelligence agent with LangGraph. I'm still not sure I needed the framework.</h1>
+<p>After hearing about LangGraph in countless conversations (including interviews), I decided that enough was enough and start building.</p>
+<h2 id="what-i-built"><strong>What I Built:</strong></h2>
+<p>A news deep search system that:
+- Orchestrates 35 parallel web searches
+- Uses LLM agents to analyze, synthesize, and filter results
+- Generates markdown news latter </p>
+<h2 id="my-take-after-building-it"><strong>My Take After Building It:</strong></h2>
+<p>LangGraph delivered typed state management and parallel execution helpers. But I kept thinking: I could've achieved this with Python's asyncio, dataclasses, and standard control flow.</p>
+<p>The state graph? Essentially structured JSON with routing logic. That's the core abstraction.</p>
+<p>Yes, LangGraph offers conveniences—automatic state merging, built-in visualization. But I'm not convinced the framework overhead pays for itself versus writing straightforward code.</p>
+<h2 id="where-langgraph-makes-sense-to-me"><strong>Where LangGraph Makes Sense to Me:</strong></h2>
+<p>Team collaboration. If you're handing off code, a standardized framework. My asyncio + checkpointing approach? Requires walking through design decisions. LangGraph? Once your team knows the patterns, it should be easier to understand.</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="mt-8 pt-6 border-t border-ctpl-surface0 dark:border-ctp-surface0">
+            <a href="/blog"
+               class="text-ctpl-mauve dark:text-ctp-mauve hover:text-ctpl-pink dark:hover:text-ctp-pink transition inline-flex items-center text-sm">
+                <i class="fas fa-arrow-left mr-2"></i> All posts
+            </a>
+        </div>
+    </div>
+</article>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-ctpl-mantle dark:bg-ctp-mantle border-t border-ctpl-surface0 dark:border-ctp-surface0 mt-20">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <p class="text-ctpl-overlay1 dark:text-ctp-overlay1 text-sm">
+                    2025 Blog
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-ctpl-overlay1 dark:text-ctp-overlay1 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition">
+                        <i class="fab fa-github text-lg"></i>
+                    </a>
+                    <a href="#" class="text-ctpl-overlay1 dark:text-ctp-overlay1 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition">
+                        <i class="fab fa-linkedin text-lg"></i>
+                    </a>
+                    <a href="#" class="text-ctpl-overlay1 dark:text-ctp-overlay1 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition">
+                        <i class="fas fa-envelope text-lg"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Theme toggle functionality
+        function toggleTheme() {
+            const html = document.documentElement;
+            const hljsTheme = document.getElementById('hljs-theme');
+
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                hljsTheme.href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/catppuccin-latte.min.css';
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                hljsTheme.href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/catppuccin-mocha.min.css';
+            }
+        }
+
+        // Theme toggle buttons
+        document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme);
+        document.getElementById('theme-toggle-mobile')?.addEventListener('click', toggleTheme);
+
+        // Set initial hljs theme based on saved preference
+        if (localStorage.getItem('theme') === 'light') {
+            document.getElementById('hljs-theme').href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/catppuccin-latte.min.css';
+        }
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (mobileMenuButton) {
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        // Initialize syntax highlighting
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        });
+    </script>
+    
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Wrap each pre element and add copy button
+        document.querySelectorAll('.blog-content pre').forEach((pre) => {
+            // Create wrapper
+            const wrapper = document.createElement('div');
+            wrapper.className = 'code-block-wrapper';
+            pre.parentNode.insertBefore(wrapper, pre);
+            wrapper.appendChild(pre);
+
+            // Create copy button
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'copy-btn';
+            copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+            wrapper.appendChild(copyBtn);
+
+            // Copy functionality
+            copyBtn.addEventListener('click', async () => {
+                const code = pre.querySelector('code');
+                const text = code ? code.textContent : pre.textContent;
+
+                try {
+                    await navigator.clipboard.writeText(text);
+                    copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied';
+                    copyBtn.classList.add('copied');
+                    setTimeout(() => {
+                        copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                        copyBtn.classList.remove('copied');
+                    }, 2000);
+                } catch (err) {
+                    console.error('Failed to copy:', err);
+                }
+            });
+
+            // Apply syntax highlighting
+            const codeBlock = pre.querySelector('code');
+            if (codeBlock) {
+                hljs.highlightElement(codeBlock);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

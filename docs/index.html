@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Personal Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Check for saved theme preference or default to dark
+        if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.classList.remove('dark');
+        }
+
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        // Catppuccin Mocha (Dark)
+                        ctp: {
+                            base: '#1e1e2e',
+                            mantle: '#181825',
+                            crust: '#11111b',
+                            text: '#cdd6f4',
+                            subtext1: '#bac2de',
+                            subtext0: '#a6adc8',
+                            overlay2: '#9399b2',
+                            overlay1: '#7f849c',
+                            overlay0: '#6c7086',
+                            surface2: '#585b70',
+                            surface1: '#45475a',
+                            surface0: '#313244',
+                            blue: '#89b4fa',
+                            lavender: '#b4befe',
+                            sapphire: '#74c7ec',
+                            sky: '#89dceb',
+                            teal: '#94e2d5',
+                            green: '#a6e3a1',
+                            yellow: '#f9e2af',
+                            peach: '#fab387',
+                            maroon: '#eba0ac',
+                            red: '#f38ba8',
+                            mauve: '#cba6f7',
+                            pink: '#f5c2e7',
+                            flamingo: '#f2cdcd',
+                            rosewater: '#f5e0dc',
+                        },
+                        // Catppuccin Latte (Light)
+                        ctpl: {
+                            base: '#eff1f5',
+                            mantle: '#e6e9ef',
+                            crust: '#dce0e8',
+                            text: '#4c4f69',
+                            subtext1: '#5c5f77',
+                            subtext0: '#6c6f85',
+                            overlay2: '#7c7f93',
+                            overlay1: '#8c8fa1',
+                            overlay0: '#9ca0b0',
+                            surface2: '#acb0be',
+                            surface1: '#bcc0cc',
+                            surface0: '#ccd0da',
+                            blue: '#1e66f5',
+                            lavender: '#7287fd',
+                            sapphire: '#209fb5',
+                            sky: '#04a5e5',
+                            teal: '#179299',
+                            green: '#40a02b',
+                            yellow: '#df8e1d',
+                            peach: '#fe640b',
+                            maroon: '#e64553',
+                            red: '#d20f39',
+                            mauve: '#8839ef',
+                            pink: '#ea76cb',
+                            flamingo: '#dd7878',
+                            rosewater: '#dc8a78',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/catppuccin-mocha.min.css" id="hljs-theme">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        /* Carousel animations - seamless infinite loop */
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes scroll-right {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .carousel-track {
+            display: flex;
+            width: fit-content;
+        }
+
+        .carousel-track-left {
+            animation: scroll-left 60s linear infinite;
+        }
+
+        .carousel-track-right {
+            animation: scroll-right 60s linear infinite;
+        }
+
+        .carousel-track:hover {
+            animation-play-state: paused;
+        }
+
+        .carousel-item {
+            flex-shrink: 0;
+        }
+
+        .card-hover {
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Dark theme scrollbar */
+        .dark ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .dark ::-webkit-scrollbar-track {
+            background: #1e1e2e;
+        }
+
+        .dark ::-webkit-scrollbar-thumb {
+            background: #45475a;
+            border-radius: 4px;
+        }
+
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #585b70;
+        }
+
+        /* Light theme scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #eff1f5;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #bcc0cc;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #acb0be;
+        }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(15deg);
+        }
+    </style>
+    
+</head>
+<body class="bg-ctpl-base dark:bg-ctp-base text-ctpl-text dark:text-ctp-text min-h-screen transition-colors duration-300">
+    <!-- Navigation -->
+    <nav class="bg-ctpl-mantle/80 dark:bg-ctp-mantle/80 backdrop-blur-md border-b border-ctpl-surface0 dark:border-ctp-surface0 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-xl font-semibold text-ctpl-text dark:text-ctp-text hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition">
+                        Pedro Pagnussat
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-ctpl-subtext0 dark:text-ctp-subtext0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition text-sm font-medium">Home</a>
+                    <a href="/blog" class="text-ctpl-subtext0 dark:text-ctp-subtext0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition text-sm font-medium">Blog</a>
+                    <a href="/projects" class="text-ctpl-subtext0 dark:text-ctp-subtext0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition text-sm font-medium">Projects</a>
+                    <a href="/resume" class="text-ctpl-subtext0 dark:text-ctp-subtext0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition text-sm font-medium">Resume</a>
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="theme-toggle text-ctpl-subtext0 dark:text-ctp-subtext0 hover:text-ctpl-yellow dark:hover:text-ctp-yellow p-2">
+                        <i class="fas fa-sun text-lg hidden dark:inline"></i>
+                        <i class="fas fa-moon text-lg dark:hidden"></i>
+                    </button>
+                </div>
+                <div class="md:hidden flex items-center space-x-4">
+                    <button id="theme-toggle-mobile" class="theme-toggle text-ctpl-subtext0 dark:text-ctp-subtext0 hover:text-ctpl-yellow dark:hover:text-ctp-yellow p-2">
+                        <i class="fas fa-sun text-lg hidden dark:inline"></i>
+                        <i class="fas fa-moon text-lg dark:hidden"></i>
+                    </button>
+                    <button id="mobile-menu-button" class="text-ctpl-subtext0 dark:text-ctp-subtext0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-ctpl-mantle dark:bg-ctp-mantle border-t border-ctpl-surface0 dark:border-ctp-surface0">
+            <div class="px-4 pt-2 pb-4 space-y-1">
+                <a href="/" class="block px-3 py-2 rounded text-ctpl-subtext0 dark:text-ctp-subtext0 hover:bg-ctpl-surface0 dark:hover:bg-ctp-surface0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve text-sm">Home</a>
+                <a href="/blog" class="block px-3 py-2 rounded text-ctpl-subtext0 dark:text-ctp-subtext0 hover:bg-ctpl-surface0 dark:hover:bg-ctp-surface0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve text-sm">Blog</a>
+                <a href="/projects" class="block px-3 py-2 rounded text-ctpl-subtext0 dark:text-ctp-subtext0 hover:bg-ctpl-surface0 dark:hover:bg-ctp-surface0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve text-sm">Projects</a>
+                <a href="/resume" class="block px-3 py-2 rounded text-ctpl-subtext0 dark:text-ctp-subtext0 hover:bg-ctpl-surface0 dark:hover:bg-ctp-surface0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve text-sm">Resume</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        
+<!-- Hero Section -->
+<section class="py-24 md:py-32">
+    <div class="max-w-7.25xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div>
+                <h1 class="text-4xl md:text-5xl font-bold text-ctpl-text dark:text-ctp-text mb-4">Pedro Nunes Pagnussat</h1>
+                <h2 class="text-xl md:text-2xl text-ctpl-mauve dark:text-ctp-mauve mb-6">Senior AI Engineer</h2>
+                <p class="text-ctpl-subtext0 dark:text-ctp-subtext0 mb-8 leading-relaxed">
+                    AI/ML Engineer with 5+ years building production systems in healthcare, telecom, and finance. Expertise in LLMs, RAG, and ML pipelines. Delivered $2.2M+ annual revenue and 72x performance gains.
+                </p>
+                <div class="flex flex-col gap-3">
+                    <div class="grid grid-cols-3 gap-3">
+                        <a href="https://linkedin.com/in/pedronp" target="_blank"
+                           class="px-5 py-2.5 border border-ctpl-surface1 dark:border-ctp-surface1 text-ctpl-subtext1 dark:text-ctp-subtext1 rounded hover:border-ctpl-mauve dark:hover:border-ctp-mauve hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition inline-flex items-center justify-center text-sm">
+                            <i class="fab fa-linkedin mr-2"></i> LinkedIn
+                        </a>
+                        <a href="https://github.com/PedroNunesPagnussat" target="_blank"
+                           class="px-5 py-2.5 border border-ctpl-surface1 dark:border-ctp-surface1 text-ctpl-subtext1 dark:text-ctp-subtext1 rounded hover:border-ctpl-mauve dark:hover:border-ctp-mauve hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition inline-flex items-center justify-center text-sm">
+                            <i class="fab fa-github mr-2"></i> GitHub
+                        </a>
+                        <a href="mailto:np.pedro.np@gmail.com"
+                           class="px-5 py-2.5 border border-ctpl-surface1 dark:border-ctp-surface1 text-ctpl-subtext1 dark:text-ctp-subtext1 rounded hover:border-ctpl-mauve dark:hover:border-ctp-mauve hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition inline-flex items-center justify-center text-sm">
+                            <i class="fas fa-envelope mr-2"></i> Email
+                        </a>
+                    </div>
+                    <a href="/static/resume.pdf"
+                       class="px-5 py-2.5 border border-ctpl-surface1 dark:border-ctp-surface1 text-ctpl-subtext1 dark:text-ctp-subtext1 rounded hover:border-ctpl-mauve dark:hover:border-ctp-mauve hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition inline-flex items-center justify-center text-sm">
+                        <i class="fas fa-download mr-2"></i> Download Resume
+                    </a>
+                </div>
+            </div>
+            <div class="flex justify-center">
+                <div class="relative">
+                    <div class="w-48 h-48 md:w-56 md:h-56 bg-ctpl-mauve/10 dark:bg-ctp-mauve/10 rounded-full absolute top-2 left-2"></div>
+                    <img src="/static/images/profile.jpg"
+                         alt="Pedro Nunes Pagnussat"
+                         class="w-48 h-48 md:w-56 md:h-56 rounded-full object-cover border-2 border-ctpl-surface0 dark:border-ctp-surface0 relative z-10"
+                         onerror="this.src='https://ui-avatars.com/api/?name=Pedro Nunes Pagnussat&size=256&background=313244&color=cba6f7&bold=true'">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tech Stack Carousel -->
+<section class="py-16 border-y border-ctpl-surface0 dark:border-ctp-surface0">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+        <h2 class="text-2xl font-semibold text-center text-ctpl-text dark:text-ctp-text mb-2">Tech Stack</h2>
+        <!-- <p class="text-ctpl-overlay1 dark:text-ctp-overlay1 text-center text-sm">Technologies I work with</p> -->
+    </div>
+
+    <!-- Line 1: Left to Right -->
+    <div class="carousel-container mb-6">
+        <div class="carousel-track carousel-track-left gap-6">
+            
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-python-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Python</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-pytorch-original text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">PyTorch</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <span class="w-8 h-8 bg-ctpl-mauve dark:bg-ctp-mauve" style="-webkit-mask: url('/static/images/logos/openai-svgrepo-com.svg') center/contain no-repeat; mask: url('/static/images/logos/openai-svgrepo-com.svg') center/contain no-repeat;"></span>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">OpenAI</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <span class="w-8 h-8 bg-ctpl-mauve dark:bg-ctp-mauve" style="-webkit-mask: url('/static/images/logos/huggingface.svg') center/contain no-repeat; mask: url('/static/images/logos/huggingface.svg') center/contain no-repeat;"></span>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Hugging Face</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <span class="w-8 h-8 bg-ctpl-mauve dark:bg-ctp-mauve" style="-webkit-mask: url('/static/images/logos/langgraph.svg') center/contain no-repeat; mask: url('/static/images/logos/langgraph.svg') center/contain no-repeat;"></span>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">LangGraph</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-fastapi-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">FastAPI</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-amazonwebservices-plain-wordmark text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">AWS</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-googlecloud-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">GCP</span>
+            </div>
+            
+            
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-python-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Python</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-pytorch-original text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">PyTorch</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <span class="w-8 h-8 bg-ctpl-mauve dark:bg-ctp-mauve" style="-webkit-mask: url('/static/images/logos/openai-svgrepo-com.svg') center/contain no-repeat; mask: url('/static/images/logos/openai-svgrepo-com.svg') center/contain no-repeat;"></span>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">OpenAI</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <span class="w-8 h-8 bg-ctpl-mauve dark:bg-ctp-mauve" style="-webkit-mask: url('/static/images/logos/huggingface.svg') center/contain no-repeat; mask: url('/static/images/logos/huggingface.svg') center/contain no-repeat;"></span>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Hugging Face</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <span class="w-8 h-8 bg-ctpl-mauve dark:bg-ctp-mauve" style="-webkit-mask: url('/static/images/logos/langgraph.svg') center/contain no-repeat; mask: url('/static/images/logos/langgraph.svg') center/contain no-repeat;"></span>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">LangGraph</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-fastapi-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">FastAPI</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-amazonwebservices-plain-wordmark text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">AWS</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-googlecloud-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">GCP</span>
+            </div>
+            
+            
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-python-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Python</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-pytorch-original text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">PyTorch</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <span class="w-8 h-8 bg-ctpl-mauve dark:bg-ctp-mauve" style="-webkit-mask: url('/static/images/logos/openai-svgrepo-com.svg') center/contain no-repeat; mask: url('/static/images/logos/openai-svgrepo-com.svg') center/contain no-repeat;"></span>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">OpenAI</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <span class="w-8 h-8 bg-ctpl-mauve dark:bg-ctp-mauve" style="-webkit-mask: url('/static/images/logos/huggingface.svg') center/contain no-repeat; mask: url('/static/images/logos/huggingface.svg') center/contain no-repeat;"></span>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Hugging Face</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <span class="w-8 h-8 bg-ctpl-mauve dark:bg-ctp-mauve" style="-webkit-mask: url('/static/images/logos/langgraph.svg') center/contain no-repeat; mask: url('/static/images/logos/langgraph.svg') center/contain no-repeat;"></span>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">LangGraph</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-fastapi-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">FastAPI</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-amazonwebservices-plain-wordmark text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">AWS</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-googlecloud-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">GCP</span>
+            </div>
+            
+            
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-python-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Python</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-pytorch-original text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">PyTorch</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <span class="w-8 h-8 bg-ctpl-mauve dark:bg-ctp-mauve" style="-webkit-mask: url('/static/images/logos/openai-svgrepo-com.svg') center/contain no-repeat; mask: url('/static/images/logos/openai-svgrepo-com.svg') center/contain no-repeat;"></span>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">OpenAI</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <span class="w-8 h-8 bg-ctpl-mauve dark:bg-ctp-mauve" style="-webkit-mask: url('/static/images/logos/huggingface.svg') center/contain no-repeat; mask: url('/static/images/logos/huggingface.svg') center/contain no-repeat;"></span>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Hugging Face</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <span class="w-8 h-8 bg-ctpl-mauve dark:bg-ctp-mauve" style="-webkit-mask: url('/static/images/logos/langgraph.svg') center/contain no-repeat; mask: url('/static/images/logos/langgraph.svg') center/contain no-repeat;"></span>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">LangGraph</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-fastapi-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">FastAPI</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-amazonwebservices-plain-wordmark text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">AWS</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-googlecloud-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">GCP</span>
+            </div>
+            
+            
+        </div>
+    </div>
+
+    <!-- Line 2: Right to Left -->
+    <div class="carousel-container">
+        <div class="carousel-track carousel-track-right gap-6">
+            
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-postgresql-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">PostgreSQL</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-mongodb-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">MongoDB</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-dynamodb-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">DynamoDB</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-docker-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Docker</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-apacheairflow-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Airflow</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-git-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Git</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-pinecone-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Pinecone</span>
+            </div>
+            
+            
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-postgresql-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">PostgreSQL</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-mongodb-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">MongoDB</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-dynamodb-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">DynamoDB</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-docker-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Docker</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-apacheairflow-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Airflow</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-git-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Git</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-pinecone-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Pinecone</span>
+            </div>
+            
+            
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-postgresql-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">PostgreSQL</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-mongodb-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">MongoDB</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-dynamodb-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">DynamoDB</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-docker-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Docker</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-apacheairflow-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Airflow</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-git-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Git</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-pinecone-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Pinecone</span>
+            </div>
+            
+            
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-postgresql-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">PostgreSQL</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-mongodb-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">MongoDB</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-dynamodb-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">DynamoDB</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-docker-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Docker</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-apacheairflow-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Airflow</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-git-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Git</span>
+            </div>
+            
+            <div class="carousel-item flex items-center gap-3 px-6 py-3 bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg ml-3">
+                
+                <i class="devicon-pinecone-plain text-3xl text-ctpl-mauve dark:text-ctp-mauve"></i>
+                
+                <span class="text-ctpl-subtext1 dark:text-ctp-subtext1 text-base font-medium whitespace-nowrap">Pinecone</span>
+            </div>
+            
+            
+        </div>
+    </div>
+</section>
+
+<!-- Work Experience -->
+<section class="py-20">
+    <div class="max-w-7.25xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-semibold text-center text-ctpl-text dark:text-ctp-text mb-12">Experience</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <div class="bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg p-6">
+                <div class="mb-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-ctpl-text dark:text-ctp-text">Elsevier</h3>
+                        <span class="text-sm text-ctpl-overlay1 dark:text-ctp-overlay1">Sep. 2025 – Present</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <p class="text-ctpl-mauve dark:text-ctp-mauve text-base">Senior AI Engineer</p>
+                        <span class="text-sm text-ctpl-overlay1 dark:text-ctp-overlay1">Remote</span>
+                    </div>
+                </div>
+                <ul class="space-y-2">
+                    
+                    <li class="flex items-start">
+                        <span class="text-ctpl-mauve dark:text-ctp-mauve mr-2 mt-1.5 text-xs">&#9679;</span>
+                        <span class="text-ctpl-subtext0 dark:text-ctp-subtext0 text-sm leading-relaxed">Architected multimodal RAG system for visual retrieval across healthcare resources, enabling medical professionals to search clinical images and tables alongside text</span>
+                    </li>
+                    
+                    <li class="flex items-start">
+                        <span class="text-ctpl-mauve dark:text-ctp-mauve mr-2 mt-1.5 text-xs">&#9679;</span>
+                        <span class="text-ctpl-subtext0 dark:text-ctp-subtext0 text-sm leading-relaxed">Designed OpenSearch indexing schema with custom chunking and metadata enrichment, improving search relevance for complex medical queries</span>
+                    </li>
+                    
+                    <li class="flex items-start">
+                        <span class="text-ctpl-mauve dark:text-ctp-mauve mr-2 mt-1.5 text-xs">&#9679;</span>
+                        <span class="text-ctpl-subtext0 dark:text-ctp-subtext0 text-sm leading-relaxed">Built high-performance image retrieval API with S3 and DynamoDB integration with async streaming, achieving <strong class="text-ctpl-mauve dark:text-ctp-mauve font-semibold">sub-1-second response times</strong> at scale</span>
+                    </li>
+                    
+                    <li class="flex items-start">
+                        <span class="text-ctpl-mauve dark:text-ctp-mauve mr-2 mt-1.5 text-xs">&#9679;</span>
+                        <span class="text-ctpl-subtext0 dark:text-ctp-subtext0 text-sm leading-relaxed">Optimized table extraction pipeline, improving retrieval accuracy by <strong class="text-ctpl-mauve dark:text-ctp-mauve font-semibold">15%</strong> while reducing token consumption by <strong class="text-ctpl-mauve dark:text-ctp-mauve font-semibold">40%</strong></span>
+                    </li>
+                    
+                </ul>
+            </div>
+            
+            <div class="bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg p-6">
+                <div class="mb-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-ctpl-text dark:text-ctp-text">Telus Digital</h3>
+                        <span class="text-sm text-ctpl-overlay1 dark:text-ctp-overlay1">Nov. 2024 – Sep. 2025</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <p class="text-ctpl-mauve dark:text-ctp-mauve text-base">Data Scientist</p>
+                        <span class="text-sm text-ctpl-overlay1 dark:text-ctp-overlay1">Porto Alegre, Brazil (Hybrid)</span>
+                    </div>
+                </div>
+                <ul class="space-y-2">
+                    
+                    <li class="flex items-start">
+                        <span class="text-ctpl-mauve dark:text-ctp-mauve mr-2 mt-1.5 text-xs">&#9679;</span>
+                        <span class="text-ctpl-subtext0 dark:text-ctp-subtext0 text-sm leading-relaxed">Built ML-powered pricing optimization system analyzing product and market features to identify optimal price for Telecom Infrastructure, generating <strong class="text-ctpl-mauve dark:text-ctp-mauve font-semibold">$1.8M/year</strong> in incremental revenue</span>
+                    </li>
+                    
+                    <li class="flex items-start">
+                        <span class="text-ctpl-mauve dark:text-ctp-mauve mr-2 mt-1.5 text-xs">&#9679;</span>
+                        <span class="text-ctpl-subtext0 dark:text-ctp-subtext0 text-sm leading-relaxed">Developed automated international roaming analysis system covering <strong class="text-ctpl-mauve dark:text-ctp-mauve font-semibold">160+ countries</strong> (6x expansion from 25), replacing manual expert reviews and generating <strong class="text-ctpl-mauve dark:text-ctp-mauve font-semibold">$440K/year</strong> in revenue</span>
+                    </li>
+                    
+                </ul>
+            </div>
+            
+            <div class="bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg p-6">
+                <div class="mb-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-ctpl-text dark:text-ctp-text">Teia Labs</h3>
+                        <span class="text-sm text-ctpl-overlay1 dark:text-ctp-overlay1">Jan. 2024 – Nov. 2024</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <p class="text-ctpl-mauve dark:text-ctp-mauve text-base">Junior Data Scientist</p>
+                        <span class="text-sm text-ctpl-overlay1 dark:text-ctp-overlay1">Porto Alegre, Brazil (On-site)</span>
+                    </div>
+                </div>
+                <ul class="space-y-2">
+                    
+                    <li class="flex items-start">
+                        <span class="text-ctpl-mauve dark:text-ctp-mauve mr-2 mt-1.5 text-xs">&#9679;</span>
+                        <span class="text-ctpl-subtext0 dark:text-ctp-subtext0 text-sm leading-relaxed">Re-engineered embedding pipeline with parallelization and batching, achieving <strong class="text-ctpl-mauve dark:text-ctp-mauve font-semibold">72x speedup</strong> and enabling daily vector database refreshes</span>
+                    </li>
+                    
+                    <li class="flex items-start">
+                        <span class="text-ctpl-mauve dark:text-ctp-mauve mr-2 mt-1.5 text-xs">&#9679;</span>
+                        <span class="text-ctpl-subtext0 dark:text-ctp-subtext0 text-sm leading-relaxed">Built LLM-powered sentiment analysis pipeline processing <strong class="text-ctpl-mauve dark:text-ctp-mauve font-semibold">40,000+ companies</strong> for investment decision support</span>
+                    </li>
+                    
+                    <li class="flex items-start">
+                        <span class="text-ctpl-mauve dark:text-ctp-mauve mr-2 mt-1.5 text-xs">&#9679;</span>
+                        <span class="text-ctpl-subtext0 dark:text-ctp-subtext0 text-sm leading-relaxed">Deployed email summarization system using LLMs, reducing analyst review time by <strong class="text-ctpl-mauve dark:text-ctp-mauve font-semibold">4+ hours/week</strong></span>
+                    </li>
+                    
+                    <li class="flex items-start">
+                        <span class="text-ctpl-mauve dark:text-ctp-mauve mr-2 mt-1.5 text-xs">&#9679;</span>
+                        <span class="text-ctpl-subtext0 dark:text-ctp-subtext0 text-sm leading-relaxed">Created AI agent research tool synthesizing web data in <strong class="text-ctpl-mauve dark:text-ctp-mauve font-semibold">under 40 seconds</strong></span>
+                    </li>
+                    
+                    <li class="flex items-start">
+                        <span class="text-ctpl-mauve dark:text-ctp-mauve mr-2 mt-1.5 text-xs">&#9679;</span>
+                        <span class="text-ctpl-subtext0 dark:text-ctp-subtext0 text-sm leading-relaxed">Integrated AI agents with RAG architecture across NoSQL and vector databases for unified cross-source retrieval</span>
+                    </li>
+                    
+                </ul>
+            </div>
+            
+            <div class="bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg p-6">
+                <div class="mb-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-ctpl-text dark:text-ctp-text">HP</h3>
+                        <span class="text-sm text-ctpl-overlay1 dark:text-ctp-overlay1">Aug. 2021 – Jan. 2024</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <p class="text-ctpl-mauve dark:text-ctp-mauve text-base">Research and Development Data Scientist</p>
+                        <span class="text-sm text-ctpl-overlay1 dark:text-ctp-overlay1">Porto Alegre, Brazil (Hybrid)</span>
+                    </div>
+                </div>
+                <ul class="space-y-2">
+                    
+                    <li class="flex items-start">
+                        <span class="text-ctpl-mauve dark:text-ctp-mauve mr-2 mt-1.5 text-xs">&#9679;</span>
+                        <span class="text-ctpl-subtext0 dark:text-ctp-subtext0 text-sm leading-relaxed">Optimized SQL analytics queries reducing dashboard load times from minutes to <strong class="text-ctpl-mauve dark:text-ctp-mauve font-semibold">under 5 seconds</strong></span>
+                    </li>
+                    
+                    <li class="flex items-start">
+                        <span class="text-ctpl-mauve dark:text-ctp-mauve mr-2 mt-1.5 text-xs">&#9679;</span>
+                        <span class="text-ctpl-subtext0 dark:text-ctp-subtext0 text-sm leading-relaxed">Migrated <strong class="text-ctpl-mauve dark:text-ctp-mauve font-semibold">30+ OMEN gaming dashboards</strong> to Power BI, standardizing reporting infrastructure</span>
+                    </li>
+                    
+                    <li class="flex items-start">
+                        <span class="text-ctpl-mauve dark:text-ctp-mauve mr-2 mt-1.5 text-xs">&#9679;</span>
+                        <span class="text-ctpl-subtext0 dark:text-ctp-subtext0 text-sm leading-relaxed">Built R&D for document intelligence: classification, NER-based auto-renaming, and semantic segmentation for document processing</span>
+                    </li>
+                    
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+</section>
+
+<!-- Education -->
+<section class="py-20 border-t border-ctpl-surface0 dark:border-ctp-surface0">
+    <div class="max-w-7.25xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-semibold text-center text-ctpl-text dark:text-ctp-text mb-12">Education</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <div class="bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-ctpl-text dark:text-ctp-text mb-2">MBA in Project Management and Agile Methodologies</h3>
+                <p class="text-ctpl-mauve dark:text-ctp-mauve text-base mb-3">Pontifical Catholic University of Rio Grande do Sul (PUC-RS)</p>
+                <div class="flex items-center justify-between text-sm text-ctpl-overlay1 dark:text-ctp-overlay1">
+                    <span>Porto Alegre, Brazil</span>
+                    <span>Dec. 2025 – Dec. 2026</span>
+                </div>
+            </div>
+            
+            <div class="bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-ctpl-text dark:text-ctp-text mb-2">Bachelor of Science in Data Science and Artificial Intelligence</h3>
+                <p class="text-ctpl-mauve dark:text-ctp-mauve text-base mb-3">Pontifical Catholic University of Rio Grande do Sul (PUC-RS)</p>
+                <div class="flex items-center justify-between text-sm text-ctpl-overlay1 dark:text-ctp-overlay1">
+                    <span>Porto Alegre, Brazil</span>
+                    <span>Mar. 2020 – Dec. 2024</span>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
+
+<!-- Languages -->
+<section class="py-20 border-t border-ctpl-surface0 dark:border-ctp-surface0">
+    <div class="max-w-7.25xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-semibold text-center text-ctpl-text dark:text-ctp-text mb-12">Languages</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            
+            <div class="bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg p-6 text-left">
+                <p class="text-ctpl-text dark:text-ctp-text font-semibold text-lg">Portuguese</p>
+                <p class="text-ctpl-mauve dark:text-ctp-mauve text-base">Native</p>
+            </div>
+            
+            <div class="bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg p-6 text-left">
+                <p class="text-ctpl-text dark:text-ctp-text font-semibold text-lg">English</p>
+                <p class="text-ctpl-mauve dark:text-ctp-mauve text-base">C1</p>
+            </div>
+            
+            <div class="bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg p-6 text-left">
+                <p class="text-ctpl-text dark:text-ctp-text font-semibold text-lg">Spanish</p>
+                <p class="text-ctpl-mauve dark:text-ctp-mauve text-base">Conversational</p>
+            </div>
+            
+            <div class="bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg p-6 text-left">
+                <p class="text-ctpl-text dark:text-ctp-text font-semibold text-lg">Chinese</p>
+                <p class="text-ctpl-mauve dark:text-ctp-mauve text-base">HSK1</p>
+            </div>
+            
+        </div>
+    </div>
+</section>
+
+<!-- Quick Links -->
+<section class="py-20 border-t border-ctpl-surface0 dark:border-ctp-surface0">
+    <div class="max-w-7.25xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <a href="/blog" class="group">
+                <div class="bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg p-6 hover:border-ctpl-mauve/50 dark:hover:border-ctp-mauve/50 transition card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <i class="fas fa-pen-nib text-2xl text-ctpl-overlay1 dark:text-ctp-overlay1 group-hover:text-ctpl-mauve dark:group-hover:text-ctp-mauve transition"></i>
+                        <i class="fas fa-arrow-right text-ctpl-overlay0 dark:text-ctp-overlay0 group-hover:text-ctpl-mauve dark:group-hover:text-ctp-mauve group-hover:translate-x-1 transition-all"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-ctpl-text dark:text-ctp-text mb-2">Blog</h3>
+                    <p class="text-ctpl-overlay1 dark:text-ctp-overlay1 text-sm">Thoughts on development and technology</p>
+                </div>
+            </a>
+            <a href="/projects" class="group">
+                <div class="bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg p-6 hover:border-ctpl-mauve/50 dark:hover:border-ctp-mauve/50 transition card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <i class="fas fa-code text-2xl text-ctpl-overlay1 dark:text-ctp-overlay1 group-hover:text-ctpl-mauve dark:group-hover:text-ctp-mauve transition"></i>
+                        <i class="fas fa-arrow-right text-ctpl-overlay0 dark:text-ctp-overlay0 group-hover:text-ctpl-mauve dark:group-hover:text-ctp-mauve group-hover:translate-x-1 transition-all"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-ctpl-text dark:text-ctp-text mb-2">Projects</h3>
+                    <p class="text-ctpl-overlay1 dark:text-ctp-overlay1 text-sm">Open source and personal work</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-ctpl-mantle dark:bg-ctp-mantle border-t border-ctpl-surface0 dark:border-ctp-surface0 mt-20">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <p class="text-ctpl-overlay1 dark:text-ctp-overlay1 text-sm">
+                    2025 Blog
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-ctpl-overlay1 dark:text-ctp-overlay1 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition">
+                        <i class="fab fa-github text-lg"></i>
+                    </a>
+                    <a href="#" class="text-ctpl-overlay1 dark:text-ctp-overlay1 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition">
+                        <i class="fab fa-linkedin text-lg"></i>
+                    </a>
+                    <a href="#" class="text-ctpl-overlay1 dark:text-ctp-overlay1 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition">
+                        <i class="fas fa-envelope text-lg"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Theme toggle functionality
+        function toggleTheme() {
+            const html = document.documentElement;
+            const hljsTheme = document.getElementById('hljs-theme');
+
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                hljsTheme.href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/catppuccin-latte.min.css';
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                hljsTheme.href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/catppuccin-mocha.min.css';
+            }
+        }
+
+        // Theme toggle buttons
+        document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme);
+        document.getElementById('theme-toggle-mobile')?.addEventListener('click', toggleTheme);
+
+        // Set initial hljs theme based on saved preference
+        if (localStorage.getItem('theme') === 'light') {
+            document.getElementById('hljs-theme').href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/catppuccin-latte.min.css';
+        }
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (mobileMenuButton) {
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        // Initialize syntax highlighting
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        });
+    </script>
+    
+</body>
+</html>

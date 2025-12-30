@@ -116,3 +116,6 @@ class Config:
     ]
 
     RESUME_PATH = '/static/resume.pdf'
+
+    # Custom domain for GitHub Pages
+    DOMAIN = 'pedropagnussat.com'  # Replace with your actual domain

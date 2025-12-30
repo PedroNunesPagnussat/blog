@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Personal Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Check for saved theme preference or default to dark
+        if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.classList.remove('dark');
+        }
+
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        // Catppuccin Mocha (Dark)
+                        ctp: {
+                            base: '#1e1e2e',
+                            mantle: '#181825',
+                            crust: '#11111b',
+                            text: '#cdd6f4',
+                            subtext1: '#bac2de',
+                            subtext0: '#a6adc8',
+                            overlay2: '#9399b2',
+                            overlay1: '#7f849c',
+                            overlay0: '#6c7086',
+                            surface2: '#585b70',
+                            surface1: '#45475a',
+                            surface0: '#313244',
+                            blue: '#89b4fa',
+                            lavender: '#b4befe',
+                            sapphire: '#74c7ec',
+                            sky: '#89dceb',
+                            teal: '#94e2d5',
+                            green: '#a6e3a1',
+                            yellow: '#f9e2af',
+                            peach: '#fab387',
+                            maroon: '#eba0ac',
+                            red: '#f38ba8',
+                            mauve: '#cba6f7',
+                            pink: '#f5c2e7',
+                            flamingo: '#f2cdcd',
+                            rosewater: '#f5e0dc',
+                        },
+                        // Catppuccin Latte (Light)
+                        ctpl: {
+                            base: '#eff1f5',
+                            mantle: '#e6e9ef',
+                            crust: '#dce0e8',
+                            text: '#4c4f69',
+                            subtext1: '#5c5f77',
+                            subtext0: '#6c6f85',
+                            overlay2: '#7c7f93',
+                            overlay1: '#8c8fa1',
+                            overlay0: '#9ca0b0',
+                            surface2: '#acb0be',
+                            surface1: '#bcc0cc',
+                            surface0: '#ccd0da',
+                            blue: '#1e66f5',
+                            lavender: '#7287fd',
+                            sapphire: '#209fb5',
+                            sky: '#04a5e5',
+                            teal: '#179299',
+                            green: '#40a02b',
+                            yellow: '#df8e1d',
+                            peach: '#fe640b',
+                            maroon: '#e64553',
+                            red: '#d20f39',
+                            mauve: '#8839ef',
+                            pink: '#ea76cb',
+                            flamingo: '#dd7878',
+                            rosewater: '#dc8a78',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/catppuccin-mocha.min.css" id="hljs-theme">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        /* Carousel animations - seamless infinite loop */
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes scroll-right {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .carousel-track {
+            display: flex;
+            width: fit-content;
+        }
+
+        .carousel-track-left {
+            animation: scroll-left 60s linear infinite;
+        }
+
+        .carousel-track-right {
+            animation: scroll-right 60s linear infinite;
+        }
+
+        .carousel-track:hover {
+            animation-play-state: paused;
+        }
+
+        .carousel-item {
+            flex-shrink: 0;
+        }
+
+        .card-hover {
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Dark theme scrollbar */
+        .dark ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .dark ::-webkit-scrollbar-track {
+            background: #1e1e2e;
+        }
+
+        .dark ::-webkit-scrollbar-thumb {
+            background: #45475a;
+            border-radius: 4px;
+        }
+
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #585b70;
+        }
+
+        /* Light theme scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #eff1f5;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #bcc0cc;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #acb0be;
+        }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(15deg);
+        }
+    </style>
+    
+</head>
+<body class="bg-ctpl-base dark:bg-ctp-base text-ctpl-text dark:text-ctp-text min-h-screen transition-colors duration-300">
+    <!-- Navigation -->
+    <nav class="bg-ctpl-mantle/80 dark:bg-ctp-mantle/80 backdrop-blur-md border-b border-ctpl-surface0 dark:border-ctp-surface0 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-xl font-semibold text-ctpl-text dark:text-ctp-text hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition">
+                        Pedro Pagnussat
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-ctpl-subtext0 dark:text-ctp-subtext0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition text-sm font-medium">Home</a>
+                    <a href="/blog" class="text-ctpl-subtext0 dark:text-ctp-subtext0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition text-sm font-medium">Blog</a>
+                    <a href="/projects" class="text-ctpl-subtext0 dark:text-ctp-subtext0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition text-sm font-medium">Projects</a>
+                    <a href="/resume" class="text-ctpl-subtext0 dark:text-ctp-subtext0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition text-sm font-medium">Resume</a>
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="theme-toggle text-ctpl-subtext0 dark:text-ctp-subtext0 hover:text-ctpl-yellow dark:hover:text-ctp-yellow p-2">
+                        <i class="fas fa-sun text-lg hidden dark:inline"></i>
+                        <i class="fas fa-moon text-lg dark:hidden"></i>
+                    </button>
+                </div>
+                <div class="md:hidden flex items-center space-x-4">
+                    <button id="theme-toggle-mobile" class="theme-toggle text-ctpl-subtext0 dark:text-ctp-subtext0 hover:text-ctpl-yellow dark:hover:text-ctp-yellow p-2">
+                        <i class="fas fa-sun text-lg hidden dark:inline"></i>
+                        <i class="fas fa-moon text-lg dark:hidden"></i>
+                    </button>
+                    <button id="mobile-menu-button" class="text-ctpl-subtext0 dark:text-ctp-subtext0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-ctpl-mantle dark:bg-ctp-mantle border-t border-ctpl-surface0 dark:border-ctp-surface0">
+            <div class="px-4 pt-2 pb-4 space-y-1">
+                <a href="/" class="block px-3 py-2 rounded text-ctpl-subtext0 dark:text-ctp-subtext0 hover:bg-ctpl-surface0 dark:hover:bg-ctp-surface0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve text-sm">Home</a>
+                <a href="/blog" class="block px-3 py-2 rounded text-ctpl-subtext0 dark:text-ctp-subtext0 hover:bg-ctpl-surface0 dark:hover:bg-ctp-surface0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve text-sm">Blog</a>
+                <a href="/projects" class="block px-3 py-2 rounded text-ctpl-subtext0 dark:text-ctp-subtext0 hover:bg-ctpl-surface0 dark:hover:bg-ctp-surface0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve text-sm">Projects</a>
+                <a href="/resume" class="block px-3 py-2 rounded text-ctpl-subtext0 dark:text-ctp-subtext0 hover:bg-ctpl-surface0 dark:hover:bg-ctp-surface0 hover:text-ctpl-mauve dark:hover:text-ctp-mauve text-sm">Resume</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        
+<!-- Header -->
+<section class="py-16 border-b border-ctpl-surface0 dark:border-ctp-surface0">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold text-ctpl-text dark:text-ctp-text mb-2">Projects</h1>
+        <p class="text-ctpl-overlay1 dark:text-ctp-overlay1">Open source and personal work</p>
+    </div>
+</section>
+
+<!-- Projects Grid -->
+<section class="py-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <div class="bg-ctpl-mantle dark:bg-ctp-mantle border border-ctpl-surface0 dark:border-ctp-surface0 rounded-lg overflow-hidden card-hover hover:border-ctpl-surface1 dark:hover:border-ctp-surface1">
+                <!-- Cover Image -->
+                <a href="https://github.com/PedroNunesPagnussat/blog" target="_blank" class="block">
+                    <div class="relative h-40 bg-ctpl-surface0 dark:bg-ctp-surface0 overflow-hidden group">
+                        <img src="/static/images/projects/blog.png"
+                             alt="Personal Portfolio &amp; Blog"
+                             class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300"
+                             onerror="this.style.display='none'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-ctpl-mantle dark:from-ctp-mantle to-transparent"></div>
+                        <div class="absolute bottom-3 left-4 right-4">
+                            <h3 class="text-ctpl-text dark:text-ctp-text font-semibold">Personal Portfolio &amp; Blog</h3>
+                        </div>
+                        <div class="absolute top-3 right-3 text-ctpl-overlay1 dark:text-ctp-overlay1 group-hover:text-ctpl-mauve dark:group-hover:text-ctp-mauve transition">
+                            <i class="fab fa-github text-lg"></i>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Content -->
+                <div class="p-5">
+                    <p class="text-ctpl-overlay1 dark:text-ctp-overlay1 text-sm mb-4 line-clamp-3">This blog.</p>
+
+                    <!-- Technologies -->
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        
+                        <span class="px-2 py-1 bg-ctpl-surface0 dark:bg-ctp-surface0 text-ctpl-subtext0 dark:text-ctp-subtext0 rounded text-xs">
+                            Python
+                        </span>
+                        
+                        <span class="px-2 py-1 bg-ctpl-surface0 dark:bg-ctp-surface0 text-ctpl-subtext0 dark:text-ctp-subtext0 rounded text-xs">
+                            Tailwind CSS
+                        </span>
+                        
+                        <span class="px-2 py-1 bg-ctpl-surface0 dark:bg-ctp-surface0 text-ctpl-subtext0 dark:text-ctp-subtext0 rounded text-xs">
+                            HTML
+                        </span>
+                        
+                    </div>
+
+                    <!-- GitHub Link -->
+                    <a href="https://github.com/PedroNunesPagnussat/blog"
+                       target="_blank"
+                       class="inline-flex items-center text-ctpl-mauve dark:text-ctp-mauve hover:text-ctpl-pink dark:hover:text-ctp-pink transition text-sm">
+                        <i class="fab fa-github mr-2"></i> View source
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+
+        
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-16 border-t border-ctpl-surface0 dark:border-ctp-surface0">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-xl font-semibold text-ctpl-text dark:text-ctp-text mb-3">Want to collaborate?</h2>
+        <p class="text-ctpl-overlay1 dark:text-ctp-overlay1 text-sm mb-6">
+            Open to interesting projects and open-source contributions.
+        </p>
+        <div class="flex justify-center gap-4">
+            <a href="https://github.com/PedroNunesPagnussat"
+               target="_blank"
+               class="px-5 py-2.5 border border-ctpl-surface1 dark:border-ctp-surface1 text-ctpl-subtext1 dark:text-ctp-subtext1 rounded hover:border-ctpl-mauve dark:hover:border-ctp-mauve hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition inline-flex items-center text-sm">
+                <i class="fab fa-github mr-2"></i> GitHub
+            </a>
+            <a href="mailto:nppedronp@gmail.com"
+               class="px-5 py-2.5 bg-ctpl-mauve dark:bg-ctp-mauve text-ctpl-base dark:text-ctp-base rounded hover:bg-ctpl-pink dark:hover:bg-ctp-pink transition inline-flex items-center text-sm font-medium">
+                <i class="fas fa-envelope mr-2"></i> Contact
+            </a>
+        </div>
+    </div>
+</section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-ctpl-mantle dark:bg-ctp-mantle border-t border-ctpl-surface0 dark:border-ctp-surface0 mt-20">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <p class="text-ctpl-overlay1 dark:text-ctp-overlay1 text-sm">
+                    2025 Blog
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-ctpl-overlay1 dark:text-ctp-overlay1 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition">
+                        <i class="fab fa-github text-lg"></i>
+                    </a>
+                    <a href="#" class="text-ctpl-overlay1 dark:text-ctp-overlay1 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition">
+                        <i class="fab fa-linkedin text-lg"></i>
+                    </a>
+                    <a href="#" class="text-ctpl-overlay1 dark:text-ctp-overlay1 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition">
+                        <i class="fas fa-envelope text-lg"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Theme toggle functionality
+        function toggleTheme() {
+            const html = document.documentElement;
+            const hljsTheme = document.getElementById('hljs-theme');
+
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                hljsTheme.href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/catppuccin-latte.min.css';
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                hljsTheme.href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/catppuccin-mocha.min.css';
+            }
+        }
+
+        // Theme toggle buttons
+        document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme);
+        document.getElementById('theme-toggle-mobile')?.addEventListener('click', toggleTheme);
+
+        // Set initial hljs theme based on saved preference
+        if (localStorage.getItem('theme') === 'light') {
+            document.getElementById('hljs-theme').href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/catppuccin-latte.min.css';
+        }
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (mobileMenuButton) {
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        // Initialize syntax highlighting
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        });
+    </script>
+    
+</body>
+</html>

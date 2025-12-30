@@ -4,6 +4,7 @@ import json
 import markdown
 from datetime import datetime
 from config import Config
+from rapidfuzz import fuzz
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -89,18 +90,18 @@ def load_projects():
 
 def search_posts(query, posts):
     """Search posts using fuzzy matching"""
-    if not query:
+    if not query or len(query) < 2:
         return posts
 
     results = []
     query_lower = query.lower()
 
     for post in posts:
-        # Calculate fuzzy match scores
-        title_score = fuzz.partial_ratio(query_lower, post['title'].lower())
-        desc_score = fuzz.partial_ratio(query_lower, post['description'].lower())
+        # Calculate fuzzy match scores using token_sort_ratio for better phrase matching
+        title_score = fuzz.token_sort_ratio(query_lower, post['title'].lower())
+        desc_score = fuzz.token_sort_ratio(query_lower, post['description'].lower())
 
-        # Check keywords
+        # Check keywords with stricter matching
         keyword_score = 0
         for keyword in post['keywords']:
             score = fuzz.ratio(query_lower, keyword.lower())
@@ -110,15 +111,15 @@ def search_posts(query, posts):
         # Calculate overall score
         max_score = max(title_score, desc_score, keyword_score)
 
-        if max_score > 60:  # Threshold for fuzzy matching
+        if max_score > 75:  # Stricter threshold for fuzzy matching
             results.append({
                 'post': post,
                 'score': max_score
             })
 
-    # Sort by score
+    # Sort by score and limit to top 5 results
     results.sort(key=lambda x: x['score'], reverse=True)
-    return [r['post'] for r in results]
+    return [r['post'] for r in results][:5]
 
 
 @app.route('/')
@@ -136,7 +137,7 @@ def home():
     )
 
 
-@app.route('/blog')
+@app.route('/blog/')
 def blog():
     """Render blog listing page with pagination"""
     page = request.args.get('page', 1, type=int)
@@ -163,7 +164,7 @@ def blog():
     )
 
 
-@app.route('/blog/<slug>')
+@app.route('/blog/<slug>/')
 def blog_post(slug):
     """Render individual blog post"""
     posts = load_blog_posts()
@@ -180,7 +181,7 @@ def blog_post(slug):
     return render_template('post.html', post=post)
 
 
-@app.route('/projects')
+@app.route('/projects/')
 def projects():
     """Render projects page"""
     project_list = load_projects()
