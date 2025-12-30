@@ -37,7 +37,7 @@ class Config:
         {'name': 'Docker', 'icon': 'devicon-docker-plain'},
         {'name': 'Airflow', 'icon': 'devicon-apacheairflow-plain'},
         {'name': 'Git', 'icon': 'devicon-git-plain'},
-        {'name': 'Pinecone', 'icon': 'devicon-pinecone-plain'}
+        # {'name': 'Pinecone', 'icon': 'devicon-pinecone-plain'}
     ]
 
 

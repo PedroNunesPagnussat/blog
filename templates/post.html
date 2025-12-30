@@ -7,7 +7,7 @@
 <section class="py-10 border-b border-ctpl-surface0 dark:border-ctp-surface0">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="mb-6">
-            <a href="/blog" class="text-ctpl-overlay1 dark:text-ctp-overlay1 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition inline-flex items-center text-sm">
+            <a href="{{ url_for('blog') }}" class="text-ctpl-overlay1 dark:text-ctp-overlay1 hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition inline-flex items-center text-sm">
                 <i class="fas fa-arrow-left mr-2"></i> Back
             </a>
         </div>
@@ -39,7 +39,7 @@
 
         <!-- Navigation -->
         <div class="mt-8 pt-6 border-t border-ctpl-surface0 dark:border-ctp-surface0">
-            <a href="/blog"
+            <a href="{{ url_for('blog') }}"
                class="text-ctpl-mauve dark:text-ctp-mauve hover:text-ctpl-pink dark:hover:text-ctp-pink transition inline-flex items-center text-sm">
                 <i class="fas fa-arrow-left mr-2"></i> All posts
             </a>
