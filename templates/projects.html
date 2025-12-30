@@ -20,7 +20,7 @@
                 <!-- Cover Image -->
                 <a href="{{ project.github_url }}" target="_blank" class="block">
                     <div class="relative h-40 bg-ctpl-surface0 dark:bg-ctp-surface0 overflow-hidden group">
-                        <img src="{{ project.cover_image }}"
+                        <img src="{{ url_for('static', filename=project.cover_image.replace('/static/', '')) }}"
                              alt="{{ project.title }}"
                              class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300"
                              onerror="this.style.display='none'">
@@ -80,8 +80,8 @@
                class="px-5 py-2.5 border border-ctpl-surface1 dark:border-ctp-surface1 text-ctpl-subtext1 dark:text-ctp-subtext1 rounded hover:border-ctpl-mauve dark:hover:border-ctp-mauve hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition inline-flex items-center text-sm">
                 <i class="fab fa-github mr-2"></i> GitHub
             </a>
-            <a href="mailto:nppedronp@gmail.com"
-               class="px-5 py-2.5 bg-ctpl-mauve dark:bg-ctp-mauve text-ctpl-base dark:text-ctp-base rounded hover:bg-ctpl-pink dark:hover:bg-ctp-pink transition inline-flex items-center text-sm font-medium">
+            <a href="mailto:np.pedro.np@gmail.com"
+               class="px-5 py-2.5 border border-ctpl-surface1 dark:border-ctp-surface1 text-ctpl-subtext1 dark:text-ctp-subtext1 rounded hover:border-ctpl-mauve dark:hover:border-ctp-mauve hover:text-ctpl-mauve dark:hover:text-ctp-mauve transition inline-flex items-center text-sm">
                 <i class="fas fa-envelope mr-2"></i> Contact
             </a>
         </div>
