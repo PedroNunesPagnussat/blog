@@ -34,17 +34,18 @@ class Config:
         {'name': 'PostgreSQL', 'icon': 'devicon-postgresql-plain'},
         {'name': 'MongoDB', 'icon': 'devicon-mongodb-plain'},
         {'name': 'DynamoDB', 'icon': 'devicon-dynamodb-plain'},
+        {'name': 'Snowflake', 'svg': '/static/images/logos/snowflake-icon.svg'},
         {'name': 'Docker', 'icon': 'devicon-docker-plain'},
         {'name': 'Airflow', 'icon': 'devicon-apacheairflow-plain'},
         {'name': 'Git', 'icon': 'devicon-git-plain'},
-        # Repeting
+        # Repeating
         {'name': 'PostgreSQL', 'icon': 'devicon-postgresql-plain'},
         {'name': 'MongoDB', 'icon': 'devicon-mongodb-plain'},
         {'name': 'DynamoDB', 'icon': 'devicon-dynamodb-plain'},
+        {'name': 'Snowflake', 'svg': '/static/images/logos/snowflake-icon.svg'},
         {'name': 'Docker', 'icon': 'devicon-docker-plain'},
         {'name': 'Airflow', 'icon': 'devicon-apacheairflow-plain'},
         {'name': 'Git', 'icon': 'devicon-git-plain'},
-        # {'name': 'Pinecone', 'icon': 'devicon-pinecone-plain'}
     ]
 
 
